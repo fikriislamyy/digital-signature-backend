@@ -18,6 +18,7 @@ func main() {
 	r := gin.Default()
 	r.POST("/signup", controllers.SignUp)
 	r.POST("/login", controllers.Login)
+	r.POST("/logout", middleware.RequireAuth, controllers.Logout)
 	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
 	r.POST("/sign", middleware.RequireAuth, controllers.SignDocument)
 	r.POST("/download/:id", middleware.RequireAuth, controllers.DownloadDocument)

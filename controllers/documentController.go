@@ -34,6 +34,14 @@ func SignDocument(c *gin.Context) {
 		return
 	}
 
+	// Check if the "file" key is present in the uploaded files
+	if _, ok := files.File["file"]; !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Please select at least on file to upload",
+		})
+		return
+	}
+
 	// Type-assert the user object to the appropriate type
 	user, ok := userObj.(models.User)
 	if !ok {
@@ -44,13 +52,6 @@ func SignDocument(c *gin.Context) {
 	}
 
 	for _, file := range files.File["file"] {
-
-		if file == nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "File select at least on document",
-			})
-			return
-		}
 
 		// Open the PDF file
 		pdfFile, err := file.Open()
